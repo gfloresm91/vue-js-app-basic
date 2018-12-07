@@ -10,12 +10,16 @@
       >{{ country.name }}</option>
     </select>
     <h2>Top artistas en {{ selectedCountry |capitalize }}</h2>
-    <topartistas v-for="artista in artistas" :artista="artista" :key="artista.mbid"></topartistas>
+    <spinner v-show="loading"></spinner>
+    <ul>
+      <topartistas v-for="artista in artistas" :artista="artista" :key="artista.mbid"></topartistas>
+    </ul>
   </div>
 </template>
 
 <script>
 import topartistas from "./components/topartistas.vue";
+import spinner from "./components/spinner.vue";
 import getArtists from "./api";
 
 export default {
@@ -29,26 +33,31 @@ export default {
         { name: "Colombia", value: "colombia" },
         { name: "España", value: "spain" }
       ],
-      selectedCountry: "chile"
+      selectedCountry: "chile",
+      loading: true
     };
   },
   components: {
-    topartistas
+    topartistas,
+    spinner
   },
   methods: {
-    refreshArtists(){
+    refreshArtists() {
       const self = this;
+      this.loading = true;
+      this.artistas = []
       getArtists(this.selectedCountry).then(function(artistas) {
-      self.artistas = artistas;
-    })
+        self.artistas = artistas;
+        self.loading = false;
+      });
     }
   },
-  mounted(){
-    this.refreshArtists()
+  mounted() {
+    this.refreshArtists();
   },
   watch: {
     selectedCountry() {
-      this.refreshArtists()
+      this.refreshArtists();
     }
   },
   filters: {
