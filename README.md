@@ -1,4 +1,4 @@
-# vue-music
+# vue-js-app-basic
 
 > Proyecto con fines educativos, creando una página con Vue :)
 
