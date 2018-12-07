@@ -1,13 +1,14 @@
-<template lang="pug">
-  #app
-    img(src='./assets/logo.png')
-    h1 Bienvenido a Vue music con last.fm api
-    h2 Top artistas en Chile
-    ul
-      li(v-for="artista in artistas") {{ artista.name }}
+<template>
+  <div id="app">
+    <img src="./assets/logo.png">
+    <h1>Bienvenido a Vue music con last.fm api</h1>
+    <h2>Top artistas en Chile</h2>
+    <topartistas v-for="artista in artistas" :artista="artista" :key="artista.mbid"></topartistas>
+  </div>
 </template>
 
 <script>
+import topartistas from './components/topartistas.vue'
 import getArtists from './api'
 
 export default {
@@ -17,12 +18,15 @@ export default {
       artistas: []
     }
   },
+  components:{
+    topartistas
+  },
   mounted: function(){
     const self = this
     getArtists()
       .then(function(artistas){
         self.artistas = artistas
-      })               
+      })
   }
 }
 </script>
